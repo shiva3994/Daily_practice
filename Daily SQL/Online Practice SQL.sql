@@ -208,4 +208,41 @@ from patients;
 
 select 
 		(select count(gender) from patients where gender = 'M') as male_count,
-        (select count(gender) from patients where gender = 'F') as female_count
+        (select count(gender) from patients where gender = 'F') as female_count;
+
+-- Show first and last name, allergies from patients which have allergies to either 'Penicillin' or 'Morphine'. 
+-- Show results ordered ascending by allergies then by first_name then by last_name.
+
+select
+      first_name,
+      last_name,
+      allergies
+from patients
+
+where allergies IN ('Penicillin','Morphine')
+
+order by allergies ASC,
+		 first_name, 
+		 last_name;
+         
+-- Show patient_id, diagnosis from admissions. Find patients admitted multiple times for the same diagnosis.
+
+select
+        patient_id,
+        diagnosis
+from admissions
+
+group by patient_id,
+		 diagnosis
+
+having count(diagnosis) > 1;
+
+-- Show the city and the total number of patients in the city.
+-- Order from most to least patients and then by city name ascending.
+
+SELECT
+  city,
+  COUNT(*) AS num_patients
+FROM patients
+GROUP BY city
+ORDER BY num_patients DESC, city asc;
