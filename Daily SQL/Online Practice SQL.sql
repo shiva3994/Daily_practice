@@ -272,4 +272,51 @@ select first_name,
 	   last_name, 
        'Doctor' from doctors;
 
+-- Show first name, last name and role of every person that is either patient or doctor.
+-- The roles are either "Patient" or "Doctor"
+
+select
+		first_name,
+        last_name,
+        'Patient' as role
+from patients        
+        
+union all
+
+select
+		first_name,
+        last_name,
+        'Doctor' as role
+from doctors;
+
+-- Show all allergies ordered by popularity. Remove NULL values from query.
+
+select 
+	allergies,
+	count(*) as total_diagnosis
+
+from patients
+where allergies is not null
+
+group by allergies
+order by total_diagnosis desc;
+ 
+-- Show all patient's first_name, last_name, and birth_date who were born in the 1970s decade. Sort the list starting from the earliest birth_date.
+
+select
+		first_name,
+        last_name,
+        birth_date
+        
+FROM patients
+
+WHERE year(birth_date) between 1970 and 1979
+
+order by birth_date;
+
+
+
+
+
+
 
