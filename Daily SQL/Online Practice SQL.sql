@@ -391,6 +391,47 @@ WHERE
   OR 
   (
     attending_doctor_id LIKE '%2%'
-    AND len(patient_id) = 3
+    AND len(patient_id) = 3;
   )
 
+-- Show patient_id, attending_doctor_id, and diagnosis for admissions that match one of the two criteria:
+-- 1. patient_id is an odd number and attending_doctor_id is either 1, 5, or 19.
+-- 2. attending_doctor_id contains a 2 and the length of patient_id is 3 characters.
+
+select 
+		patient_id,
+        attending_doctor_id,
+        diagnosis
+from admissions
+
+Where ( attending_doctor_id in (1,5,19) 
+       and patient_id % 2 != 0)
+       
+       or
+       
+       (attending_doctor_id like '%2%'
+        AND len(patient_id) = 3);
+        
+-- Show first_name, last_name, and the total number of admissions attended for each doctor.
+-- Every admission has been attended by a doctor.
+
+select	
+		d.first_name,
+        d.last_name,
+        count(*) as admissions_total
+        
+from admissions a
+join doctors d
+on a.attending_doctor_id = d.doctor_id
+group by doctor_id;
+
+-- Display the total amount of patients for each province. Order by descending.
+
+select 
+		province_name,
+        count(*) as patient_count
+from patients p
+join province_names pn
+on p.province_id = pn.province_id
+group by province_name
+order by patient_count desc;
