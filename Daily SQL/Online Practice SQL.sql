@@ -448,3 +448,50 @@ join doctors d
 on a.attending_doctor_id = d.doctor_id
 group by doctor_id;
 
+-- For every admission, display the patient's full name, their admission diagnosis, and their doctor's full name who diagnosed their problem.
+
+select
+		concat(p.first_name,' ',p.last_name) as patient_name,
+        diagnosis,
+        concat(d.first_name,' ',d.last_name) AS doctor_name
+
+from patients p
+join admissions a
+on p.patient_id = a.patient_id
+join doctors d
+on a.attending_doctor_id = d.doctor_id;
+
+-- display the first name, last name and number of duplicate patients based on their first name and last name.
+-- Ex: A patient with an identical name can be considered a duplicate.
+
+select
+		first_name,
+        last_name,
+        count(*) AS num_of_duplicate
+from patients
+group by first_name, 
+		 last_name
+having count(*) > 1;
+
+-- Display patient's full name,
+-- height in the units feet rounded to 1 decimal,
+-- weight in the unit pounds rounded to 0 decimals,
+-- birth_date,
+-- gender non abbreviated.
+-- Convert CM to feet by dividing by 30.48.
+-- Convert KG to pounds by multiplying by 2.205.
+
+select
+		concat(first_name,' ',last_name) as patient_name,
+        round(height/30.48,1) as height,
+        round(weight*2.205,0) AS weight,
+        birth_date,
+        CASE
+            WHEN gender = 'M' 
+            THEN 'MALE' 
+            ELSE 'FEMALE' END 
+            AS 'gender_type'
+from patients;
+
+
+
