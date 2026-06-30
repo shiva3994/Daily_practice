@@ -709,3 +709,41 @@ SELECT
         
 FROM admissions 
 GROUP BY has_insurance;
+
+-- All patients who have gone through admissions, can see their medical documents on our site. 
+-- Those patients are given a temporary password after their first admission. Show the patient_id and temp_password.
+-- The password must be the following, in order:
+-- 1. patient_id
+-- 2. the numerical length of patient's last_name
+-- 3. year of patient's birth_date
+
+SELECT 
+		p.patient_id,
+		concat(p.patient_id,
+               len(p.last_name),
+               year(p.birth_date))
+               as temp_password
+
+FROM patients p
+join admissions a
+on p.patient_id = a.patient_id
+group by p.patient_id;
+
+-- Each admission costs $50 for patients without insurance, and $10 for patients with insurance. All patients with an even patient_id have insurance.
+-- Give each patient a 'Yes' if they have insurance, and a 'No' if they don't have insurance. Add up the admission_total cost for each has_insurance group.
+
+SELECT
+		CASE
+        when patient_id % 2 = 0
+        then "Yes"
+        else "No"
+        end as has_insurance,
+		
+	SUM(case
+        when patient_id % 2 = 0
+        then 10
+        else 50
+        end) as cost_after_insurance
+            
+from admissions
+group by has_insurance
