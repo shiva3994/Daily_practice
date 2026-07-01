@@ -808,8 +808,22 @@ where first_name like '%__R%'
       and patient_id % 2 != 0
       and city = 'Kingston';
       
+-- Show the percent of patients that have 'M' as their gender. Round the answer to the nearest hundreth number and in percent form.
 
+SELECT 
+   		CONCAT(
+        	   ROUND(
+                     SUM(gender = 'M') / CAST(COUNT(*) AS float),4) * 100, '%') as percent_of_male_patients
+FROM patients;
 
+-- For each day display the total amount of admissions on that day. Display the amount changed from the previous date.
+
+SELECT 
+		admission_date,
+        count(*) as admission_day,
+        LAG(count(admission_date)) OVER(ORDER BY admission_date) AS admission_count_change 
+FROM admissions
+group by admission_date;
 
 
 
