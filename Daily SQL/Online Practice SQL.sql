@@ -775,3 +775,20 @@ from (SELECT
         
 where n_male > n_female;
     
+-- Show the provinces that has more patients identified as 'M' than 'F'. Must only show full province_name
+    
+select 
+		province_name
+
+from (Select
+		pn.province_name,
+        sum(gender = 'M') as num_male,
+        sum(gender = 'F') as num_female
+        
+      	from patients p
+      
+        join province_names pn on p.province_id = pn.province_id
+
+        group by pn.province_name)
+        
+where num_male > num_female;
