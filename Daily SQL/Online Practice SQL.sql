@@ -784,11 +784,37 @@ from (Select
 		pn.province_name,
         sum(gender = 'M') as num_male,
         sum(gender = 'F') as num_female
-        
       	from patients p
-      
         join province_names pn on p.province_id = pn.province_id
-
         group by pn.province_name)
         
 where num_male > num_female;
+
+-- We are looking for a specific patient. Pull all columns for the patient who matches the following criteria:
+-- - First_name contains an 'r' after the first two letters.
+-- - Identifies their gender as 'F'
+-- - Born in February, May, or December
+-- - Their weight would be between 60kg and 80kg
+-- - Their patient_id is an odd number
+-- - They are from the city 'Kingston'
+
+select *        
+from patients
+
+where first_name like '%__R%'
+	  And gender = 'F'
+      and month(birth_date) in ( 2, 5, 12)
+      and weight between 60 and 80
+      and patient_id % 2 != 0
+      and city = 'Kingston';
+      
+
+
+
+
+
+      
+      
+      
+      
+      
